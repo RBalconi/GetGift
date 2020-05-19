@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "Get Gift",
+  "version": "1.0",
+  "description": "Get your Twitch gift channel points automatically.",
+  "author": "RBalconi",
+  "content_scripts": [{
+    "matches": ["https://www.twitch.tv/*"],
+    "css": ["styles/style.css"],
+    "js": ["scripts/scripts.js"]
+  }],
+  "web_accessible_resources": [
+    "assets/*.svg"
+  ]
+}
