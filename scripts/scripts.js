@@ -1,4 +1,5 @@
 const intervalDivPoints = setInterval(() => {
+
   const divDefaultTwitch = getElementByXpath("//div[@class='chat-input__buttons-container tw-flex tw-justify-content-between tw-mg-t-1']");
   if (divDefaultTwitch) {
     clearInterval(intervalDivPoints);
@@ -6,7 +7,6 @@ const intervalDivPoints = setInterval(() => {
     const divPoints = document.createElement("div");
     divPoints.classList.add("tw-inline-flex", "tw-relative", "tw-tooltip-wrapper", "revert-position");
     divDefaultTwitch.appendChild(divPoints);
-
     
     const button = document.createElement("button");
     button.classList.add("button-points-receiver");
@@ -17,11 +17,16 @@ const intervalDivPoints = setInterval(() => {
     button.appendChild(icon);
 
     const spanNumber = document.createElement("span");
-    spanNumber.innerHTML = "00";
+    if(localStorage.getItem("gg_pointsReceivedToday")){
+      compareDates();
+      spanNumber.innerHTML = localStorage.getItem("gg_pointsReceivedToday");
+    }else{
+      localStorage.setItem("gg_pointsReceivedToday", "00");      
+      spanNumber.innerHTML = localStorage.getItem("gg_pointsReceivedToday");
+    }
     spanNumber.id = "span-number-points-receiver";
     spanNumber.classList.add("number-points-receiver");
     button.appendChild(spanNumber);
-
 
     const divTip = document.createElement("div");
     divTip.innerHTML = "Pontos recolhidos automaticamente";
@@ -43,16 +48,29 @@ const intervalClickButtonGift = setInterval(() =>{
   btnGift.click();
 
   const intervalValuePointReceived = setInterval(() => {      
+
     valuePointReceived = getElementByXpath("//div[@class='tw-align-items-center tw-c-text-link tw-flex tw-pd-y-05']"); 
 
     if (valuePointReceived){
       clearInterval(intervalValuePointReceived);
-      totalPointsReceived = totalPointsReceived + parseInt(valuePointReceived.innerText.split("+")[1]);
-      getElementByXpath("//span[@id='span-number-points-receiver']").innerHTML = totalPointsReceived;
+      totalPointsReceived = parseInt(localStorage.getItem("gg_pointsReceivedToday")) + parseInt(valuePointReceived.innerText.split("+")[1]);      
+      localStorage.setItem("gg_pointsReceivedToday", totalPointsReceived);
+      getElementByXpath("//span[@id='span-number-points-receiver']").innerHTML = localStorage.getItem("gg_pointsReceivedToday");
     }
+
   }, 500);
 
 }, 5000);
+
+function compareDates() {
+  let currentDate = new Date().getTime();
+  let LastDate = new Date().getTime();
+  localStorage.setItem("gg_lastDate", LastDate);
+
+  if(!(localStorage.getItem("gg_lastDate") == currentDate)){
+    localStorage.setItem("gg_pointsReceivedToday", "00");
+  }
+}
 
 function getElementByXpath(path) {
   return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
