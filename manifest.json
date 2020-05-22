@@ -12,5 +12,11 @@
   "web_accessible_resources": [
     "assets/*.svg",
     "assets/beep.mp3"
-  ]
+  ],
+  "icons": { 
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png",
+    "256": "icon256.png"
+  }
 }
