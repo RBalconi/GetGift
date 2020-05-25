@@ -6,8 +6,8 @@
   "author": "RBalconi",
   "content_scripts": [{
     "matches": ["https://www.twitch.tv/*"],
-    "css": ["styles/style.css"],
-    "js": ["scripts/scripts.js"]
+    "css": ["styles/styles.min.css"],
+    "js": ["scripts/scripts.min.js"]
   }],
   "web_accessible_resources": [
     "assets/*.svg",
