@@ -2,7 +2,7 @@ const intervalDivPoints = setInterval(() => {
   const divBottomChatTwitch = getElementByXpath("//div[@class='chat-input__buttons-container tw-flex tw-justify-content-between tw-mg-t-1']");
   if (divBottomChatTwitch) {
     clearInterval(intervalDivPoints);
-
+    
     const divPoints = document.createElement("div");
     divPoints.classList.add("tw-inline-flex", "tw-relative", "tw-tooltip-wrapper", "revert-position");
     divBottomChatTwitch.appendChild(divPoints);
@@ -31,7 +31,16 @@ const intervalDivPoints = setInterval(() => {
     divTip.innerHTML = "Pontos recolhidos automaticamente";
     divTip.classList.add("tw-tooltip", "tw-tooltip--align-center", "tw-tooltip--up");
     divPoints.appendChild(divTip);       
-  }  
+  };
+}, 1000);
+
+const intervalPStreamer = setInterval(() =>{
+  const pStreamer = getElementByXpath("//p[@class='tw-c-text-inherit tw-font-size-5 tw-white-space-nowrap']");
+  if (pStreamer) {
+    clearInterval(intervalPStreamer);
+    compareStreamers(pStreamer.innerHTML);
+    getElementByXpath("//span[@id='span-number-points-receiver']").innerHTML = localStorage.getItem("gg_pointsReceivedToday");
+  }
 }, 1000);
 
 const intervalConfigTwitch = setInterval(() => {  
@@ -133,6 +142,15 @@ function compareDates() {
   }
 }
 
+function compareStreamers(currentStreamer) {
+  if (localStorage.getItem("gg_lastStreamer") === null) {
+    localStorage.setItem("gg_lastStreamer", currentStreamer);
+  }
+  if (!(localStorage.getItem("gg_lastStreamer") == currentStreamer)) {
+    localStorage.setItem("gg_pointsReceivedToday", "00");
+    localStorage.setItem("gg_lastStreamer", currentStreamer);
+  }
+}
 
 function audioPlay() {
   if (localStorage.getItem("gg_soundCheck") == "true") {
