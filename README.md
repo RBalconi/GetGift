@@ -6,7 +6,11 @@ Get Gift is an extension for Google Chrome that does just that, it detects when 
 
 ## The Extension
 
+<<<<<<< HEAD
 ![PrintsScreens of the extension in use](images/all.png)
+=======
+![PrintsScreens of the extension in use](link-to-image)
+>>>>>>> 5705898e24db1ea143882b706eefdc8426044ace
 
 An extension with the simple purpose of taking your channel points while you watch that live in tranquility.
 
@@ -15,4 +19,7 @@ Being able to check the amount of points you got just by looking at the extensio
 ## Techonologies used
 - JavaScript
 - CSS3
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5705898e24db1ea143882b706eefdc8426044ace
