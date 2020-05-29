@@ -1,47 +1,46 @@
 const intervalDivPoints = setInterval(() => {
   const divBottomChatTwitch = getElementByXpath("//div[@class='chat-input__buttons-container tw-flex tw-justify-content-between tw-mg-t-1']");
   if (divBottomChatTwitch) {
-    clearInterval(intervalDivPoints);
-    
-    const divPoints = document.createElement("div");
-    divPoints.classList.add("tw-inline-flex", "tw-relative", "tw-tooltip-wrapper", "revert-position");
-    divBottomChatTwitch.appendChild(divPoints);
-    
-    const button = document.createElement("button");
-    button.classList.add("button-points-receiver");
-    divPoints.appendChild(button);
+    if(!getElementByXpath("//span[@id='span-number-points-receiver']")){
+      const divPoints = document.createElement("div");
+      divPoints.classList.add("tw-inline-flex", "tw-relative", "tw-tooltip-wrapper", "revert-position");
+      divBottomChatTwitch.appendChild(divPoints);
+      
+      const button = document.createElement("button");
+      button.classList.add("button-points-receiver");
+      divPoints.appendChild(button);
 
-    const icon = document.createElement("div");
-    icon.classList.add("icon");
-    button.appendChild(icon);
+      const icon = document.createElement("div");
+      icon.classList.add("icon");
+      button.appendChild(icon);
+      
+      const spanNumber = document.createElement("span");
+      if(localStorage.getItem("gg_pointsReceivedToday")){
+        compareDates();
+        spanNumber.innerHTML = localStorage.getItem("gg_pointsReceivedToday");
+      }else{
+        localStorage.setItem("gg_pointsReceivedToday", "00");
+        spanNumber.innerHTML = localStorage.getItem("gg_pointsReceivedToday");
+      }
+      spanNumber.id = "span-number-points-receiver";
+      spanNumber.classList.add("number-points-receiver");
+      button.appendChild(spanNumber);
 
-    const spanNumber = document.createElement("span");
-    if(localStorage.getItem("gg_pointsReceivedToday")){
-      compareDates();
-      spanNumber.innerHTML = localStorage.getItem("gg_pointsReceivedToday");
-    }else{
-      localStorage.setItem("gg_pointsReceivedToday", "00");
-      spanNumber.innerHTML = localStorage.getItem("gg_pointsReceivedToday");
+      const divTip = document.createElement("div");
+      divTip.innerHTML = "Pontos recolhidos automaticamente";
+      divTip.classList.add("tw-tooltip", "tw-tooltip--align-center", "tw-tooltip--up");
+      divPoints.appendChild(divTip);   
     }
-    spanNumber.id = "span-number-points-receiver";
-    spanNumber.classList.add("number-points-receiver");
-    button.appendChild(spanNumber);
-
-    const divTip = document.createElement("div");
-    divTip.innerHTML = "Pontos recolhidos automaticamente";
-    divTip.classList.add("tw-tooltip", "tw-tooltip--align-center", "tw-tooltip--up");
-    divPoints.appendChild(divTip);       
   };
-}, 1000);
+}, 500);
 
 const intervalPStreamer = setInterval(() =>{
   const pStreamer = getElementByXpath("//p[@class='tw-c-text-inherit tw-font-size-5 tw-white-space-nowrap']");
   if (pStreamer) {
-    clearInterval(intervalPStreamer);
     compareStreamers(pStreamer.innerHTML);
     getElementByXpath("//span[@id='span-number-points-receiver']").innerHTML = localStorage.getItem("gg_pointsReceivedToday");
   }
-}, 1000);
+}, 3000);
 
 const intervalConfigTwitch = setInterval(() => {  
   const divConfigTwitch = getElementByXpath("//div[@class='chat-settings__content tw-border-bottom-left-radius-medium tw-border-bottom-right-radius-medium tw-c-background-base tw-c-text-base tw-pd-1']");
@@ -114,7 +113,7 @@ const intervalConfigTwitch = setInterval(() => {
 let totalPointsReceived = 0;
 let valuePointReceived;
 const intervalClickButtonGift = setInterval(() =>{
-  const btnGift = getElementByXpath("//span[@data-a-target='tw-core-button-label-text']");
+  const btnGift = getElementByXpath("//div[@class='claimable-bonus__icon tw-flex']");
   if (!btnGift){
     return "Button Gift Not Find!";
   }
@@ -128,7 +127,6 @@ const intervalClickButtonGift = setInterval(() =>{
       localStorage.setItem("gg_pointsReceivedToday", totalPointsReceived);
       getElementByXpath("//span[@id='span-number-points-receiver']").innerHTML = localStorage.getItem("gg_pointsReceivedToday");
     }
-
   }, 500);
 }, 5000);
 
@@ -143,11 +141,11 @@ function compareDates() {
 }
 
 function compareStreamers(currentStreamer) {
-  if (localStorage.getItem("gg_lastStreamer") === null) {
-    localStorage.setItem("gg_lastStreamer", currentStreamer);
-  }
   if (!(localStorage.getItem("gg_lastStreamer") == currentStreamer)) {
     localStorage.setItem("gg_pointsReceivedToday", "00");
+    localStorage.setItem("gg_lastStreamer", currentStreamer);
+  }
+  if (localStorage.getItem("gg_lastStreamer") === null) {
     localStorage.setItem("gg_lastStreamer", currentStreamer);
   }
 }
